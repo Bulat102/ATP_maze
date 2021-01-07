@@ -16,6 +16,8 @@
 			xhr.open("GET","Bulat102.pythonanywhere.com",true);
 			xhr.send();
 			
+			console.log('Запрос отправлен');
+			
 			xhr.onreadystatechange = function(){
 				if (xhr.readyState !=4) return;
 				
