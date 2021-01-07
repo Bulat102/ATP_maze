@@ -7,14 +7,21 @@
 
 <body>
 	
-	<button onclick="loadPhones()" id="button">Загрузить phones.json!</button>
+	<button onclick="loadPhones()" id="button">Отправить данные</button>
 	
 	<script>
 		function loadPhones(){
 			var xhr = new XMLHttpRequest();
 			
-			xhr.open("GET","HTTPS://Bulat102.pythonanywhere.com/phones.json",true);
-			xhr.send();
+			var json = JSON.stringify({
+				name: "Фисташка",
+				score:543
+			});
+			
+			xhr.open("POST","HTTPS://Bulat102.pythonanywhere.com/submit",true);
+			xhr.setRequestHeader("Content-type",'application/json; charset=utf-8');
+			
+			xhr.send(json);
 			
 			console.log('Запрос отправлен');
 			
@@ -32,7 +39,7 @@
 				}
 			}
 			
-			button.innerHTML = "Загружаю...";
+			button.innerHTML = "Отправляю...";
 			button.disabled = true;
 		}
 	</script>
