@@ -13,16 +13,25 @@
 		function loadPhones(){
 			var xhr = new XMLHttpRequest();
 			
-			xhr.open("GET","https://Bulat102.pythonanywhere.com",true);
+			xhr.open("GET","Bulat102.pythonanywhere.com",false);
 			xhr.send();
 			
-			if (xhr.status != 200){
-				//обработать ошибку
-				alert("Ошибка " + xhr.status + ': ' + xhr.statusText);
-			} else {
-				// вывести результат
-				alert(xhr.responseText);
+			xhr.onreadystatechange = function(){
+				if (xhr.readyState !=4) return;
+				
+				button.innerHTML = "Готово!";
+			
+				if (xhr.status != 200){
+					//обработать ошибку
+					alert("Ошибка " + xhr.status + ': ' + xhr.statusText);
+				} else {
+					// вывести результат
+					alert(xhr.responseText);
+				}
 			}
+			
+			button.innerHTML = "Загружаю...";
+			button.disabled = true;
 		}
 	</script>
 </body>
