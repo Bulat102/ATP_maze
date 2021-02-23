@@ -4,7 +4,7 @@ class GameScene extends Phaser.Scene{
 	}
 	
 	init(){
-		this.time_amount = 1*1000;
+		this.time_amount = 60*1000;
 		this.score = 0;
 	}
 	
