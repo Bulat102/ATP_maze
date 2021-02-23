@@ -11,6 +11,7 @@ class EndScene extends Phaser.Scene{
 		let backg = this.add.image(0,0,'end_background');
 		backg.setOrigin(0,0);
 		
+		let scene = this;
 		
 		//Подложка таблицы
 		let graphics = this.add.graphics();
@@ -22,7 +23,7 @@ class EndScene extends Phaser.Scene{
 		let button_text = this.add.text(148+2,565+8, 'Обновить таблицу', {fontSize:'20px', fontStyle:'bold', color:'#000000'});
 		button_text.setInteractive({cursor: 'pointer'});
 		button_text.on('pointerdown', function(){
-			this.getScore();
+			scene.getScore();
 		});
 		
 		//Надписи
@@ -30,7 +31,7 @@ class EndScene extends Phaser.Scene{
 		this.table_field= this.add.text(250,160,'Вами набрано '+ String(total_score)+' очков\n\nИдет загрузка ресурсов...',{fontSize:'20px', fontStyle:'bold', color:'#000000'});
 		
 		//Делаем запрос на сервер
-		this.setScore(String(name),Number(total_score));
+		this.setScore(scene, String(name),Number(total_score));
 	}
 	
 	//Рисуем подложку
@@ -50,10 +51,9 @@ class EndScene extends Phaser.Scene{
 	}
 	
 	//Запрос на сервер по поводу таблицы рекордов
-	setScore(name,score){
+	setScore(scene,name,score){
 		
 		var xhr = new XMLHttpRequest();
-		var scene = this;
 		
 		var json = JSON.stringify({
 			name: name,
@@ -97,7 +97,7 @@ class EndScene extends Phaser.Scene{
 		var scene = this;
 		
 		
-		xhr.open("GET","HTTPS://Bulat102.pythonanywhere.com/get_score/atp",true);
+		xhr.open("GET","HTTPS://Bulat102.pythonanywhere.com/get_score/atp_get",true);
 		xhr.setRequestHeader("Content-type",'application/json; charset=utf-8');
 			
 		xhr.send();
