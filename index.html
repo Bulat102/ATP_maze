@@ -1,47 +1,16 @@
-
-<html>
-
+<!DOCTYPE HTML>
 <head>
-	<meta charset="utf-8">
+	<meta charset = "UTF-8" />
+	<title>Форма регистрации</title>
 </head>
-
 <body>
-	
-	<button onclick="loadPhones()" id="button">Отправить данные</button>
-	
-	<script>
-		function loadPhones(){
-			var xhr = new XMLHttpRequest();
-			
-			var json = JSON.stringify({
-				name: "Фисташка",
-				score:543
-			});
-			
-			xhr.open("POST","HTTPS://Bulat102.pythonanywhere.com/set_score",true);
-			xhr.setRequestHeader("Content-type",'application/json; charset=utf-8');
-			
-			xhr.send(json);
-			
-			console.log('Запрос отправлен');
-			
-			xhr.onreadystatechange = function(){
-				if (xhr.readyState !=4) return;
-				
-				button.innerHTML = "Готово!";
-			
-				if (xhr.status != 200){
-					//обработать ошибку
-					alert("Ошибка " + xhr.status + ': ' + xhr.statusText);
-				} else {
-					// вывести результат
-					alert(xhr.responseText);
-				}
-			}
-			
-			button.innerHTML = "Отправляю...";
-			button.disabled = true;
-		}
-	</script>
+	<form action = "game.html">
+		<p><img align="left" src="assets/npz.jpg" alt="НПЗ" vspace = '10' hspace = '10'/>
+		<h3>Здравствуйте!</h3>
+		<p>Инструкция:<br>Перетащите мышкой датчики на их места на схеме НПЗ.<br>Время ограничено таймером.</p>
+		<p>Введите ваше имя для регистрации: </p>
+		<input type ='text' name = 'Name'>
+		<input type = 'submit'></p>
+	</form>
 </body>
 </html>
