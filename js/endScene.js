@@ -4,12 +4,12 @@ class EndScene extends Phaser.Scene{
 	}
 	
 	preload(){
-		this.load.image('end_background','assets/end_background.jpg');
+		//this.load.image('end_background','assets/end_background.jpg');
 	}
 	
 	create(){
-		let backg = this.add.image(0,0,'end_background');
-		backg.setOrigin(0,0);
+		//let backg = this.add.image(0,0,'end_background');
+		//backg.setOrigin(0,0);
 		
 		let scene = this;
 		
