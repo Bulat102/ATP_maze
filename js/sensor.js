@@ -12,14 +12,18 @@ class Sensor extends Phaser.GameObjects.Sprite{
 		scene.input.setDraggable(this);
 		
 		this.on('pointerover', function(){
-			//this.setTint(0x00ff00);
-			this.setScale(1.2);
+			scene.show_big_sensor(type,true);
 		});
 		
 		this.on('pointerout', function(){
-			//this.clearTint();
-			this.setScale(1);
+			scene.show_big_sensor(type,false);
+		});
+		
+		this.on('pointerdown', function(){
+			scene.show_big_sensor(type,false);
 		});
 		
 	}
 }
+
+

@@ -4,12 +4,12 @@ class EndScene extends Phaser.Scene{
 	}
 	
 	preload(){
-		//this.load.image('end_background','assets/end_background.jpg');
+		this.load.image('end_background','assets/end_background.jpg');
 	}
 	
 	create(){
-		//let backg = this.add.image(0,0,'end_background');
-		//backg.setOrigin(0,0);
+		let backg = this.add.image(200,10,'end_background');
+		backg.setOrigin(0,0);
 		
 		let scene = this;
 		
@@ -27,11 +27,14 @@ class EndScene extends Phaser.Scene{
 		});
 		
 		//Надписи
-		this.head = this.add.text(250,110,'Список рекордов:',{fontSize:'30px', fontStyle:'bold', color:'#000000'});
-		this.table_field= this.add.text(250,160,'Вами набрано '+ String(total_score)+' очков\n\nИдет загрузка ресурсов...',{fontSize:'20px', fontStyle:'bold', color:'#000000'});
+		let end_text = 'Вами набрано '+ String(total_score)+' очков\n Из них:\n За верные датчики: '+String(total_score-time_score)+' очков\n За время: '+String(time_score)+' очков'+'\n\nИдет загрузка рекордов...'
+		this.head = this.add.text(250,160,'Список рекордов:',{fontSize:'30px', fontStyle:'bold', color:'#000000'});
+		this.table_field= this.add.text(180,210,end_text,{fontSize:'20px', fontStyle:'bold', color:'#000000'});
 		
-		//Делаем запрос на сервер
-		this.setScore(scene, String(name),Number(total_score));
+		//Делаем запрос на сервер с задержкой в 3 секунды
+		this.time.delayedCall(3000, function(){this.setScore(scene);},[],this);
+		
+		sessionStorage.setItem('session_score',total_score);
 	}
 	
 	//Рисуем подложку
@@ -51,13 +54,16 @@ class EndScene extends Phaser.Scene{
 	}
 	
 	//Запрос на сервер по поводу таблицы рекордов
-	setScore(scene,name,score){
+	setScore(scene){
 		
 		var xhr = new XMLHttpRequest();
 		
 		var json = JSON.stringify({
 			name: name,
-			score: score
+			surname: surname,
+			player_class: player_class,
+			player_school: player_school,
+			score: Number(total_score)
 		});
 		
 		xhr.open("POST","HTTPS://Bulat102.pythonanywhere.com/set_score/atp",true);

@@ -4,7 +4,7 @@ class GameScene extends Phaser.Scene{
 	}
 	
 	init(){
-		this.time_amount = 300*1000;
+		this.time_amount = 60*1000;
 		this.score = 0;
 	}
 	
@@ -14,12 +14,19 @@ class GameScene extends Phaser.Scene{
 		this.load.image('pressure','assets/pressure.png');
 		this.load.image('flow','assets/flow.png');
 		this.load.image('temperature','assets/temperature.png');
+		this.load.image('helmet','assets/helmet.png');
+		
+		this.load.image('level_big','assets/big_icons/level_big.png');
+		this.load.image('pressure_big','assets/big_icons/pressure_big.png');
+		this.load.image('flow_big','assets/big_icons/flow_big.png');
+		this.load.image('temperature_big','assets/big_icons/temperature_big.png');
 	}
 
 	create(){
 		
 		let backg = this.add.image(200,0,'background');
 		backg.setOrigin(0,0);
+		
 		
 		let graphics = this.add.graphics();
 		this.draw_graphics(graphics);
@@ -47,9 +54,26 @@ class GameScene extends Phaser.Scene{
 			}
 		}
 		
+		// Ставим большие значки датчиков и скрываем их
+		this.big_sensors =[];
+		for(let i=0;i<this.new_sensors.length;i++){
+			let type = i;
+			this.big_sensors.push(this.add.image(this.new_sensors[i].x,this.new_sensors[i].y,this.new_sensors[i].name+'_big'));
+			this.big_sensors[type].visible = false;
+			this.big_sensors[type].depth = 1;
+		}
+		
 		//Ставим поля времени и очков
 		this.timer_field = this.add.text(50,20,"Таймер: "+String(this.time_amount/1000)+' сек',{fontSize:'20px', fontStyle:'bold', color:'#000000'});
 		this.score_field = this.add.text(300,20,"Очки: "+String(this.score),{fontSize:'20px', fontStyle:'bold', color:'#000000'});
+		this.lifes_field = this.add.text(60,480,"Попыток: "+String(lifes),{fontSize:'20px', fontStyle:'bold', color:'#FF0000'});
+		
+		//Показываем жизни
+		this.helmet_images = [];
+		for(let i=0;i<lifes;i++){
+			this.helmet_images.push(this.add.image(70+i*50,524,'helmet'));
+			this.helmet_images[i].setScale(0.4);
+		}
 		
 		//Настраиваем таймер
 		this.timerEvent = this.time.addEvent({callback:this.timerLoop, delay : 1000, repeat: Math.round(this.time_amount/1000)-1, callbackScope:this}); 
@@ -63,6 +87,11 @@ class GameScene extends Phaser.Scene{
 		gr.fillStyle(0xF0B27A,1.0);
 		gr.fillRect(50,50,100,410);
 		gr.strokeRect(50,50,100,410);
+	}
+	
+	//Функция высвечивания/скрытия больщого сенсора
+	show_big_sensor(type,visible = false){
+		this.big_sensors[type].visible = visible;
 	}
 	
 	//Функция добавления очков
@@ -119,11 +148,12 @@ class GameScene extends Phaser.Scene{
 						
 						if(gameObject.spots.length == 0){
 							gameObject.scene.gameOver();
+							return;
 						}
 						
 						gameObject.scene.spawn_sensor(gameObject.type);
 						throw_back = false;
-						gameObject.scene.addScore(50);
+						gameObject.scene.addScore(50); // Добавляем 50 очков
 						
 						break;
 					}
@@ -131,9 +161,24 @@ class GameScene extends Phaser.Scene{
 			}
 			if(throw_back){
 				gameObject.setScale(1);
+				
+				//Если выходит в зону спотов >300px - вычитаем жизнь
+				if(gameObject.x > 300){
+					gameObject.scene.cameras.main.shake(100,0.005);
+					lifes--;
+					gameObject.scene.lifes_field.setText("Попыток: "+String(lifes)); 
+					gameObject.scene.helmet_images[lifes].destroy();
+					gameObject.scene.helmet_images.splice(lifes,1);
+					if(lifes == 0){	
+						gameObject.scene.timerEvent.remove(); //Удаляем бонус за вермя
+						gameObject.scene.gameOver();
+						return;
+					};
+				}
+				
 				gameObject.x = gameObject.scene.new_sensors[gameObject.type].x;
 				gameObject.y = gameObject.scene.new_sensors[gameObject.type].y;
-				gameObject.scene.cameras.main.shake(100,0.005);
+				
 				gameObject.scene.input.setDefaultCursor('default');//Ставим обычный курсор
 			}
 		});
@@ -155,6 +200,7 @@ class GameScene extends Phaser.Scene{
 	gameOver(){
 		let time_left = this.timerEvent.getRepeatCount();
 		total_score =  time_left + this.score;
+		time_score = time_left
 		this.scene.add('EndScene',EndScene,true); // Название и класс должны быть одинаковыми
 		this.scene.remove(this);
 	}
