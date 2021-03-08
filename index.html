@@ -2,23 +2,106 @@
 <head>
 	<meta charset = "UTF-8" />
 	<title>Форма регистрации</title>
+	<style>
+		.fig{
+			text-align: center;
+		}
+		.block1 { 
+			padding: 5px;
+			float: left;
+		}		
+		.block3 { 
+			position: relative; 
+			float: left; 
+			top: 50px;
+			padding: 20px;
+		}
+		
+		.block_t { 
+			position: relative; 
+			float: left;
+			top: 100px;
+			width: 30%;
+			left: 40px;
+			font-size: 24px;
+		}
+		
+		.block4 { 
+			position: relative; 
+			float: left; 
+			top: 50px; 
+			left: 350px; 
+		}
+		
+		.block5 { 
+			position: relative; 
+			float: left; 
+			width: 100%;
+			top:50px;
+		}
+		
+		.button{
+			width: 100%;
+			height: 100%;
+			left: 100px;
+		}
+	</style>
 </head>
 <body>
 	<form action = "game.html">
 		
-		<p><img align="left" src="assets/npz.jpg" alt="НПЗ" vspace = '10' hspace = '10'/>
+		<hr align="center width="100%" size="15" color="#ff9900" />
 		
-		<h3>Добро пожаловать в тест!</h3>
-		<p><big>Описание:<br>Системы автоматического управления (САУ) на НПЗ используют датчики.<br>
-		Расставьте верно датчики на аппаратах. Первые 3 места получат сертификаты.</p>
+		<p class='fig'>
+			<img align="center" src="assets/landing/zavod_text.png" alt="zavod 2077" vspace = '10' hspace = '10'/>
+			<img align="center" src="assets/landing/zavod.jpg" alt="НПЗ" vspace = '10' hspace = '10'/>
+			<div class = 'fig'><h1>Добро пожаловать в игру "Расставь датчики" станции Zavod 2077!</h1></div>
+		</p>
 		
-		<p>Введите данные для регистрации: </p></big>
-		Имя: <input type ='text' name = 'Name' required>
-		Фамилия: <input type ='text' name = 'Surname' required><br><br>
-		Класс: <input type ='text' name = 'Class' required>
-		Школа: <input type ='text' name = 'School' required><br><br>
+		<div class='block1'>
+			<div class='block3'>
+				<img align='left' src="assets/landing/instruction_1.png" alt="инструкция 1"/>
+				<div class='block_t'>
+					&nbsp;&nbsp;&nbsp;Системы автоматического управления (САУ) на НПЗ используют датчики.<br>
+					Расставьте верно датчики на аппаратах.<br> Первые 3 места получат сертификаты.
+				</div>
+			</div>
 		
-		<input type = 'submit' value = 'Начать'></p><br>
+			<div class='block3'>
+				<img align='left' src="assets/landing/instruction_2.jpg" alt="инструкция 2"/>
+				<div class='block_t'>
+					&nbsp;&nbsp;&nbsp;Датчики переносите мышкой на специальные места, обозначенные красными кружочками.
+				</div>
+			</div>
+		
+			<div class='block3'>
+				<img align='left' src="assets/landing/instruction_3.jpg" alt="инструкция 3"/>
+				<div class='block_t'>
+					&nbsp;&nbsp;&nbsp;Успейте за время и наберите как можно больше очков.
+				</div>
+			</div>
+		
+		</div>
+		
+		<div class='block3'>
+			<img align='left' src="assets/landing/certificate.jpg" alt="сертификат"/>
+			<div class='block_t'>
+				&nbsp;&nbsp;&nbsp;Если вы займете в списке рекордов призовое место, будет оформлен именной электронный сертификат.
+				<br>Он будет отправлен на электронный адрес школы.
+				<br>Его можно будет обменять в школе на оценку по Физике.
+			</div>
+		</div>
+		
+		<div class='block4'>
+			<p><big> Введите данные для регистрации: </big></p>
+			Имя: <input type ='text' name = 'Name' required>
+			Фамилия: <input type ='text' name = 'Surname' required><br><br>
+			Класс: <input type ='text' name = 'Class' required>
+			Школа: <input type ='text' name = 'School' required><br><br>
+		
+			<button class='button'><h3>Начать игру</h3></button><br>
+		</div>
+		<div class='block5'><hr align="center width="100%" size="15" color="#ff9900" /></div>
 	</form>
 </body>
 </html>

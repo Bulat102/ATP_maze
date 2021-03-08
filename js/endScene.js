@@ -5,6 +5,9 @@ class EndScene extends Phaser.Scene{
 	
 	preload(){
 		this.load.image('end_background','assets/end_background.jpg');
+		this.load.image('m_gold','assets/medals/gold.png');
+		this.load.image('m_silver','assets/medals/silver.png');
+		this.load.image('m_bronze','assets/medals/bronze.png');
 	}
 	
 	create(){
@@ -25,14 +28,22 @@ class EndScene extends Phaser.Scene{
 		button_text.on('pointerdown', function(){
 			scene.getScore();
 		});
+		//Пока прячем кнопку
+		button_text.visible=false;
+		button.visible=false;
 		
 		//Надписи
 		let end_text = 'Вами набрано '+ String(total_score)+' очков\n Из них:\n За верные датчики: '+String(total_score-time_score)+' очков\n За время: '+String(time_score)+' очков'+'\n\nИдет загрузка рекордов...'
 		this.head = this.add.text(250,160,'Список рекордов:',{fontSize:'30px', fontStyle:'bold', color:'#000000'});
-		this.table_field= this.add.text(180,210,end_text,{fontSize:'20px', fontStyle:'bold', color:'#000000'});
+		this.table_field= this.add.text(200,210,end_text,{fontSize:'20px', fontStyle:'bold', color:'#000000'});
 		
 		//Делаем запрос на сервер с задержкой в 3 секунды
-		this.time.delayedCall(3000, function(){this.setScore(scene);},[],this);
+		this.time.delayedCall(3000, function(){
+				//this.setScore(scene);
+				button_text.visible=true;
+				button.visible=true;
+				this.show_medals();
+			},[],this);
 		
 		sessionStorage.setItem('session_score',total_score);
 	}
@@ -51,6 +62,17 @@ class EndScene extends Phaser.Scene{
 		gr.fillStyle(0xD0D3D4,0.6);
 		gr.fillRoundedRect(x,y,200,30, 5);
 		gr.strokeRoundedRect(x,y,200,30, 5);
+	}
+	
+	//Рисуем медали
+	show_medals(){
+		let medals = [];
+		let medal_x = 180;
+		let medal_y = 255;
+		let medal_dy = 20;
+		medals.push(this.add.image(medal_x,medal_y,'m_gold').setScale(0.3));
+		medals.push(this.add.image(medal_x,medal_y+medal_dy,'m_silver').setScale(0.3));
+		medals.push(this.add.image(medal_x,medal_y+medal_dy*2,'m_bronze').setScale(0.3));
 	}
 	
 	//Запрос на сервер по поводу таблицы рекордов
@@ -85,6 +107,7 @@ class EndScene extends Phaser.Scene{
 				let top_place = Number(String(xhr.responseText).slice(-1)); //выводим топовое место, если получили, если нет то 0
 				//console.log(xhr.responseText);
 				
+				score_table = 'Место       Игрок       Очки'+'\n\n'+ score_table;
 				scene.table_field.setText(score_table);
 				
 				/*if (Boolean(top_place)){
@@ -121,6 +144,7 @@ class EndScene extends Phaser.Scene{
 				let score_table = String(xhr.responseText).slice(0,-1);
 				let top_place = Number(String(xhr.responseText).slice(-1)); //выводим топовое место, если получили, если нет то 0
 				
+				score_table = 'Место       Игрок       Очки'+'\n\n'+ score_table;
 				scene.table_field.setText(score_table);
 			}
 		}

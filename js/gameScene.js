@@ -36,11 +36,21 @@ class GameScene extends Phaser.Scene{
 		this.spots =[{"x":402,"y":195,"number":0},{"x":408,"y":355,"number":3},{"x":484,"y":128,"number":1},{"x":475,"y":82,"number":2},{"x":826,"y":55,"number":3},{"x":683,"y":311,"number":1},{"x":652,"y":356,"number":2},{"x":616,"y":423,"number":3},{"x":617,"y":475,"number":0},{"x":606,"y":554,"number":3},{"x":476,"y":476,"number":1},{"x":892,"y":484,"number":3}];
 
 		this.new_sensors=[
-			{x:100, y: 100, amount:0, name: 'level'},
-			{x:100, y: 200, amount:0, name: 'pressure'},
-			{x:100, y: 400, amount:0, name: 'temperature'},
-			{x:100, y: 300, amount:0, name: 'flow'}
+			{x:150, y: 90, amount:0, name: 'level'},
+			{x:150, y: 190, amount:0, name: 'pressure'},
+			{x:150, y: 390, amount:0, name: 'temperature'},
+			{x:150, y: 290, amount:0, name: 'flow'}
 		];
+		//Расставляем названия значков на панельке
+		let sensor_text_format = {fontSize:'16px', fontStyle:'bold', color:'#000000', align:'left'};
+		let sensor_x = 37;
+		let sensor_dy = -23;
+		let sensor_texts = [];
+		sensor_texts.push(this.add.text(sensor_x,100+sensor_dy, 'Датчик\nуровня', sensor_text_format));
+		sensor_texts.push(this.add.text(sensor_x,200+sensor_dy, 'Датчик\nдавления', sensor_text_format));
+		sensor_texts.push(this.add.text(sensor_x,300+sensor_dy, 'Датчик\nрасхода', sensor_text_format));
+		sensor_texts.push(this.add.text(sensor_x,425+sensor_dy, 'Датчик\nтемпературы', sensor_text_format));
+		
 		//обновим число требуемых датчиков по количеству мест
 		for(let i=0;i<this.spots.length;i++){
 			this.new_sensors[this.spots[i].number].amount++;
@@ -50,7 +60,7 @@ class GameScene extends Phaser.Scene{
 			let type = i;
 			if(this.new_sensors[i].amount>0){
 				this.sensors.push(new Sensor(this,this.new_sensors[i].x,this.new_sensors[i].y,this.new_sensors[i].name, i));
-				this.new_sensors[i].text_field = this.add.text(this.new_sensors[i].x+this.sensors[i].width/2-10,this.new_sensors[i].y+this.sensors[i].height/2-5,String(this.new_sensors[i].amount),{fontSize:'14px', fontStyle:'bold', color:'#FFFFFF'});
+				this.new_sensors[i].text_field = this.add.text(this.new_sensors[i].x-this.sensors[i].width/2,this.new_sensors[i].y-this.sensors[i].height/2-1,String(this.new_sensors[i].amount),{fontSize:'14px', fontStyle:'bold', color:'#FFFFFF'});
 			}
 		}
 		
@@ -83,10 +93,15 @@ class GameScene extends Phaser.Scene{
     
     //Рисуем поле инструментов
     draw_graphics(gr){
-		gr.lineStyle(5,0xE67E22 ,1.0);
+		gr.lineStyle(7,0xE67E22 ,1.0);
+		gr.beginPath();
+		gr.moveTo(30,49);
+		gr.lineTo(170,49);
+		gr.closePath();
+		gr.strokePath();
 		gr.fillStyle(0xF0B27A,1.0);
-		gr.fillRect(50,50,100,410);
-		gr.strokeRect(50,50,100,410);
+		gr.fillRect(30,50,140,400);
+		//gr.strokeRect(50,50,100,410);
 	}
 	
 	//Функция высвечивания/скрытия больщого сенсора
@@ -122,7 +137,7 @@ class GameScene extends Phaser.Scene{
 		this.input.on('dragstart', function(pointer, gameObject, dragX, dragY){
 			gameObject.x = pointer.position.x;
 			gameObject.y = pointer.position.y;
-			gameObject.setScale(0.4);
+			gameObject.setScale(0.57);
 		});
 		
 		this.input.on('drag', function(pointer, gameObject, dragX, dragY){
@@ -137,7 +152,7 @@ class GameScene extends Phaser.Scene{
 					if(gameObject.scene.overlap(gameObject.spots[i].x,gameObject.spots[i].y,gameObject)){
 						gameObject.removeInteractive();
 						
-						gameObject.setScale(0.4);
+						gameObject.setScale(0.57);
 						gameObject.scene.input.setDefaultCursor('default');//Ставим обычный курсор
 						gameObject.x = gameObject.spots[i].x;
 						gameObject.y = gameObject.spots[i].y;
