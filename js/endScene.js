@@ -42,7 +42,6 @@ class EndScene extends Phaser.Scene{
 				this.setScore(scene);
 				button_text.visible=true;
 				button.visible=true;
-				this.show_medals();
 			},[],this);
 		
 		sessionStorage.setItem('session_score',total_score);
@@ -109,6 +108,7 @@ class EndScene extends Phaser.Scene{
 				
 				score_table = 'Место       Игрок       Очки'+'\n\n'+ score_table;
 				scene.table_field.setText(score_table);
+				scene.show_medals();
 				
 				/*if (Boolean(top_place)){
 					scoresText.text = scoresText.text+"\n\n Ваш результат "+score+" попал на "+top_place+' место!';
