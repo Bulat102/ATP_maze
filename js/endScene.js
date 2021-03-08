@@ -39,7 +39,7 @@ class EndScene extends Phaser.Scene{
 		
 		//Делаем запрос на сервер с задержкой в 3 секунды
 		this.time.delayedCall(3000, function(){
-				//this.setScore(scene);
+				this.setScore(scene);
 				button_text.visible=true;
 				button.visible=true;
 				this.show_medals();
