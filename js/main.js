@@ -1,4 +1,5 @@
 var config = {
+	scale:{parent: 'game', autoCenter: Phaser.Scale.CENTER_BOTH},
         type: Phaser.AUTO,
         width: 1100,
         height: 600,
